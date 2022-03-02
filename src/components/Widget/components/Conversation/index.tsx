@@ -88,14 +88,20 @@ function Conversation({
   
   const [pickerOffset, setOffset] = useState(0)
   const senderRef = useRef<ISenderRef>(null!);
-  const [pickerStatus, setPicket] = useState(false) 
+  const [pickerStatus, setPicket] = useState(false)
+  const [listening, setListening] = useState(false)
  
   const onSelectEmoji = (emoji) => {
     senderRef.current?.onSelectEmoji(emoji)
   }
 
   const togglePicker = () => {
-    setPicket(prevPickerStatus => !prevPickerStatus)
+    // note: 'listening' will come into this function being false, and will leave function false despite being update
+    // same thing applies when 'listening' is true when it comes into the function. it will eventually get updated, so
+    // don't worry about that, but beware...
+    setListening(listening => !listening)
+    console.log(`listening: ${!listening}`)
+
   }
 
   const handlerSendMsn = (event) => {
