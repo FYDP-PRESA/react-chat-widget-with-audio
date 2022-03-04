@@ -6,7 +6,6 @@ import Header from './components/Header';
 import Messages from './components/Messages';
 import Sender from './components/Sender';
 import QuickButtons from './components/QuickButtons';
-
 import { AnyFunction } from '../../../../utils/types';
 
 import './style.scss';
@@ -90,23 +89,40 @@ function Conversation({
   const senderRef = useRef<ISenderRef>(null!);
   const [pickerStatus, setPicket] = useState(false)
   const [listening, setListening] = useState(false)
+  const [recordState, setRecordState] = useState(null);
+  const [audioData, setAudioData] = useState<any>({});
  
   const onSelectEmoji = (emoji) => {
     senderRef.current?.onSelectEmoji(emoji)
   }
 
-  const togglePicker = () => {
+  const togglePicker = async () => {
     // note: 'listening' will come into this function being false, and will leave function false despite being update
     // same thing applies when 'listening' is true when it comes into the function. it will eventually get updated, so
     // don't worry about that, but beware...
-    setListening(listening => !listening)
-    console.log(`listening: ${!listening}`)
 
+    if (listening) {
+      // if listening is equal to true, then the user clicked to stop recording, so stop the recording
+      setRecordState(RecordState.STOP)
+      console.log(`stop recording`)
+    } else {
+      // if listening is equal to false, then the user clicked to start recording, so start recording
+      setRecordState(RecordState.START)
+      console.log(`start recording`)
+    }
+
+    setListening(!listening)
+    // console.log(`Listening: ${listening}`)
   }
 
   const handlerSendMsn = (event) => {
     sendMessage(event)
     if(pickerStatus) setPicket(false)
+  }
+
+  const onStop = (data) => {
+    console.log(`audioData ${data}`)
+    setAudioData(data)
   }
 
   return (
@@ -141,6 +157,12 @@ function Conversation({
         onPressEmoji={togglePicker}
         onChangeSize={setOffset}
       />
+      {/*<AudioReactRecorder state={ recordState } onStop={ onStop } />*/}
+      {/*<audio*/}
+      {/*    id='audio'*/}
+      {/*    controls*/}
+      {/*    src={audioData === {} ? audioData.url : null}*/}
+      {/*></audio>*/}
     </div>
   );
 }
