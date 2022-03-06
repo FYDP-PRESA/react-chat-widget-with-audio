@@ -7,6 +7,7 @@ import Messages from './components/Messages';
 import Sender from './components/Sender';
 import QuickButtons from './components/QuickButtons';
 import { AnyFunction } from '../../../../utils/types';
+import AudioReactRecorder, { RecordState } from 'audio-react-recorder'
 
 import './style.scss';
 
@@ -55,6 +56,7 @@ function Conversation({
   resizable,
   emojis
 }: Props) {
+
   const [containerDiv, setContainerDiv] = useState<HTMLElement | null>();
   let startX, startWidth;
 
@@ -89,10 +91,14 @@ function Conversation({
   const senderRef = useRef<ISenderRef>(null!);
   const [pickerStatus, setPicket] = useState(false)
   const [listening, setListening] = useState(false)
-  const [recordState, setRecordState] = useState(null);
+  const [recordState, setRecordState] = useState(false);
   const [audioData, setAudioData] = useState<any>({});
+  const [isRecording, setIsRecording] = useState(false)
+  const [blobURL, setBlobURL] = useState("") 
+
  
   const onSelectEmoji = (emoji) => {
+    console.log("anything")
     senderRef.current?.onSelectEmoji(emoji)
   }
 
@@ -111,8 +117,18 @@ function Conversation({
       console.log(`start recording`)
     }
 
-    setListening(!listening)
+    setListening(listening => !listening)
     // console.log(`Listening: ${listening}`)
+  }
+
+  const start = () => {
+    setRecordState(RecordState.START)
+    console.log('start recording')
+  }
+ 
+  const stop = () => {
+    setRecordState(RecordState.STOP)
+    console.log(`stop recording`)
   }
 
   const handlerSendMsn = (event) => {
@@ -157,12 +173,15 @@ function Conversation({
         onPressEmoji={togglePicker}
         onChangeSize={setOffset}
       />
-      {/*<AudioReactRecorder state={ recordState } onStop={ onStop } />*/}
-      {/*<audio*/}
-      {/*    id='audio'*/}
-      {/*    controls*/}
-      {/*    src={audioData === {} ? audioData.url : null}*/}
-      {/*></audio>*/}
+      <AudioReactRecorder state={recordState} onStop={onStop} type={"wav"} />
+      <audio
+          id='audio'
+          controls
+          src={audioData ? audioData.url : null}
+        ></audio>
+
+      <button onClick={start}>Start</button>
+      <button onClick={stop}>Stop</button>
     </div>
   );
 }
