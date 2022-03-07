@@ -33,7 +33,7 @@ type Props = {
   handleSubmit?: AnyFunction;
   showBadge?: boolean;
   resizable?: boolean;
-  emojis?: boolean;
+  emojis?: any;
 }
 
 function Widget({

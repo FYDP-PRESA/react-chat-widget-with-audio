@@ -11,6 +11,10 @@ export default class App extends Component {
     addResponseMessage('![vertical](https://d2sofvawe08yqg.cloudfront.net/reintroducing-react/hero2x?1556470143)');
   }
 
+  state = {
+    audioData: {url: ""}
+  }
+
   handleNewUserMessage = (newMessage: any) => {
     toggleMsgLoader();
     setTimeout(() => {
@@ -36,8 +40,14 @@ export default class App extends Component {
     return true;
   }
 
+  onStop = (data) => {
+    console.log(`audioData ${data}`)
+    this.setState({audioData: data})
+  }
+
   render() {
     return (
+      <div>
       <Widget
         title="Bienvenido"
         subtitle="Asistente virtual"
@@ -46,8 +56,14 @@ export default class App extends Component {
         handleQuickButtonClicked={this.handleQuickButtonClicked}
         imagePreview
         handleSubmit={this.handleSubmit}
-        // emojis
+        emojis={this.onStop}
       />
+      <audio
+          id='audio'
+          controls
+          src={this.state.audioData.url}
+        ></audio>
+      </div>
     );
   }
 }

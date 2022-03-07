@@ -30,7 +30,7 @@ type Props = {
   showTimeStamp?: boolean;
   imagePreview?: boolean;
   zoomStep?: number;
-  emojis?: boolean;
+  emojis?: any;
   handleSubmit?: AnyFunction;
   showBadge?: boolean;
   resizable?: boolean;

@@ -33,7 +33,7 @@ type Props = {
   sendButtonAlt: string;
   showTimeStamp: boolean;
   resizable?: boolean;
-  emojis?: boolean;
+  emojis?: any;
 };
 
 function Conversation({
@@ -163,12 +163,8 @@ function Conversation({
         onPressEmoji={togglePicker}
         onChangeSize={setOffset}
       />
-      <AudioReactRecorder state={recordState} onStop={onStop} type={"wav"} canvasWidth={0} canvasHeight={0}/>
-      <audio
-          id='audio'
-          controls
-          src={audioData ? audioData.url : null}
-        ></audio>
+      <AudioReactRecorder state={recordState} onStop={emojis} type={"wav"} canvasWidth={0} canvasHeight={0}/>
+      
     </div>
   );
 }

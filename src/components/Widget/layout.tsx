@@ -38,7 +38,7 @@ type Props = {
   zoomStep?: number;
   showBadge?: boolean;
   resizable?: boolean;
-  emojis?: boolean
+  emojis?: any;
 }
 
 function WidgetLayout({
