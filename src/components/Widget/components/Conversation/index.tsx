@@ -102,7 +102,7 @@ function Conversation({
     senderRef.current?.onSelectEmoji(emoji)
   }
 
-  const togglePicker = async () => {
+  const togglePicker = () => {
     // note: 'listening' will come into this function being false, and will leave function false despite being update
     // same thing applies when 'listening' is true when it comes into the function. it will eventually get updated, so
     // don't worry about that, but beware...
@@ -117,18 +117,8 @@ function Conversation({
       console.log(`start recording`)
     }
 
-    setListening(listening => !listening)
+    setListening(!listening)
     // console.log(`Listening: ${listening}`)
-  }
-
-  const start = () => {
-    setRecordState(RecordState.START)
-    console.log('start recording')
-  }
- 
-  const stop = () => {
-    setRecordState(RecordState.STOP)
-    console.log(`stop recording`)
   }
 
   const handlerSendMsn = (event) => {
@@ -158,10 +148,10 @@ function Conversation({
         showTimeStamp={showTimeStamp}
       />
       <QuickButtons onQuickButtonClicked={onQuickButtonClicked} />
-      {emojis && pickerStatus && (<Picker 
+      {/* {emojis && pickerStatus && (<Picker 
         style={{ position: 'absolute', bottom: pickerOffset, left: '0', width: '100%' }}
         onSelect={onSelectEmoji}
-      />)}
+      />)} */}
       <Sender
         ref={senderRef}
         sendMessage={handlerSendMsn}
@@ -173,15 +163,12 @@ function Conversation({
         onPressEmoji={togglePicker}
         onChangeSize={setOffset}
       />
-      <AudioReactRecorder state={recordState} onStop={onStop} type={"wav"} />
+      <AudioReactRecorder state={recordState} onStop={onStop} type={"wav"} canvasWidth={0} canvasHeight={0}/>
       <audio
           id='audio'
           controls
           src={audioData ? audioData.url : null}
         ></audio>
-
-      <button onClick={start}>Start</button>
-      <button onClick={stop}>Stop</button>
     </div>
   );
 }
